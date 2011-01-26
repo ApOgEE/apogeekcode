@@ -1,0 +1,39 @@
+Pengarang: M. Fauzilkamil Zainuddin
+Tarikh: 26 Januari 2011
+
+Ini adalah kernel SD Card Fastboot untuk TS-7260. Saya muat turun dari:
+ftp://ftp.embeddedarm.com/images/kernel/ts7260-fb-default
+
+Kernel ini bertarikh 12/22/2009 12:00:00 AM dalam pelayan ftp embeddedarm.com.
+Anda boleh mengemaskini kernel ini sekiranya terdapat versi terkini pada
+pelayan mereka.
+
+Penggunaan:
+
+Kernel ini digunakan pada partition pertama dalam SD Card tersebut. Contohnya
+jika nama partition adalah /dev/sdc1 , maka, anda boleh guna arahan ini:
+
+        $ dd if=ts7260-fb-default of=/dev/sdc1
+
+Tunggu hingga selesai. Dan anda telah siap mengemaskini kernel SD card tersebut.
+
+
+-----------------------------------------------------------------------------------
+Author: M. Fauzilkamil Zainuddin
+Date: 26 January 2011
+
+This is the latest TS-7260 SD Card fastboot kernel. I downloaded this kernel from:
+ftp://ftp.embeddedarm.com/images/kernel/ts7260-fb-default
+
+This kernel is dated 12/22/2009 12:00:00 AM on embeddedarm.com site. You can update 
+this kernel if you found any newer version on their site.
+
+Usage:
+
+This kernel suppose to be written on the first partition of the SD Card. For example
+the partition is /dev/sdc1 , therefore, you can use this command:
+
+	$ dd if=ts7260-fb-default of=/dev/sdc1
+
+Wait until it finish. And you are done updating the SD card kernel.
+
