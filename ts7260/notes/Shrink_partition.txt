@@ -1,0 +1,181 @@
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# mount /dev/sdc3 /media/sdcard/
+
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# df -ah
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/sda1             3.8G  2.1G  1.6G  58% /
+proc                     0     0     0   -  /proc
+none                     0     0     0   -  /sys
+none                     0     0     0   -  /sys/fs/fuse/connections
+none                     0     0     0   -  /sys/kernel/debug
+none                     0     0     0   -  /sys/kernel/security
+none                  245M  236K  245M   1% /dev
+none                     0     0     0   -  /dev/pts
+none                  249M     0  249M   0% /dev/shm
+none                  249M  268K  249M   1% /var/run
+none                  249M     0  249M   0% /var/lock
+none                  249M     0  249M   0% /lib/init/rw
+/dev/sdb1              20G  6.1G   13G  33% /media/hd2
+none                  0.0K  0.0K  0.0K   -  /proc/fs/vmblock/mountPoint
+/dev/sdc3             1.8G  457M  1.3G  27% /media/sdcard
+
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# umount /dev/sdc3
+
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# e2fsck -fy /dev/sdc3
+e2fsck 1.41.11 (14-Mar-2010)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/sdc3: 20009/472000 files (4.7% non-contiguous), 527386/1926400 blocks
+
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# resize2fs /dev/sdc3 600M
+resize2fs 1.41.11 (14-Mar-2010)
+Resizing the filesystem on /dev/sdc3 to 614400 (1k) blocks.
+The filesystem on /dev/sdc3 is now 614400 blocks long.
+
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# fdisk /dev/sdc
+
+WARNING: DOS-compatible mode is deprecated. It's strongly recommended to
+         switch off the mode (command 'c') and change display units to
+         sectors (command 'u').
+
+Command (m for help): p
+
+Disk /dev/sdc: 1977 MB, 1977614336 bytes
+16 heads, 32 sectors/track, 7544 cylinders
+Units = cylinders of 512 * 512 = 262144 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdc1               1           6        1520   da  Non-FS data
+/dev/sdc2               7          10        1024   da  Non-FS data
+/dev/sdc3              20        7544     1926400   83  Linux
+
+Command (m for help): d
+Partition number (1-4): 3
+
+Command (m for help): p
+
+Disk /dev/sdc: 1977 MB, 1977614336 bytes
+16 heads, 32 sectors/track, 7544 cylinders
+Units = cylinders of 512 * 512 = 262144 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdc1               1           6        1520   da  Non-FS data
+/dev/sdc2               7          10        1024   da  Non-FS data
+
+Command (m for help): n
+Command action
+   e   extended
+   p   primary partition (1-4)
+p
+Partition number (1-4): 3
+First cylinder (11-7544, default 11): 20
+Last cylinder, +cylinders or +size{K,M,G} (20-7544, default 7544): +610M
+
+Command (m for help): p
+
+Disk /dev/sdc: 1977 MB, 1977614336 bytes
+16 heads, 32 sectors/track, 7544 cylinders
+Units = cylinders of 512 * 512 = 262144 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdc1               1           6        1520   da  Non-FS data
+/dev/sdc2               7          10        1024   da  Non-FS data
+/dev/sdc3              20        2460      624896   83  Linux
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+Syncing disks.
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# fdisk -l
+
+Disk /dev/sda: 4294 MB, 4294967296 bytes
+255 heads, 63 sectors/track, 522 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x0000586f
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *           1         493     3952640   83  Linux
+Partition 1 does not end on cylinder boundary.
+/dev/sda2             493         523      238593    5  Extended
+Partition 2 does not end on cylinder boundary.
+/dev/sda5             493         523      238592   82  Linux swap / Solaris
+
+Disk /dev/sdb: 21.5 GB, 21474836480 bytes
+255 heads, 63 sectors/track, 2610 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0xf4fca559
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1               1        2610    20964793+  83  Linux
+
+Disk /dev/sdc: 1977 MB, 1977614336 bytes
+16 heads, 32 sectors/track, 7544 cylinders
+Units = cylinders of 512 * 512 = 262144 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdc1               1           6        1520   da  Non-FS data
+/dev/sdc2               7          10        1024   da  Non-FS data
+/dev/sdc3              20        2460      624896   83  Linux
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# resize2fs /dev/sdc3
+resize2fs 1.41.11 (14-Mar-2010)
+Resizing the filesystem on /dev/sdc3 to 624896 (1k) blocks.
+The filesystem on /dev/sdc3 is now 624896 blocks long.
+
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# mount /dev/sdc3 /media/sdcard/
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# df -ah
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/sda1             3.8G  2.1G  1.6G  58% /
+proc                     0     0     0   -  /proc
+none                     0     0     0   -  /sys
+none                     0     0     0   -  /sys/fs/fuse/connections
+none                     0     0     0   -  /sys/kernel/debug
+none                     0     0     0   -  /sys/kernel/security
+none                  245M  236K  245M   1% /dev
+none                     0     0     0   -  /dev/pts
+none                  249M     0  249M   0% /dev/shm
+none                  249M  268K  249M   1% /var/run
+none                  249M     0  249M   0% /var/lock
+none                  249M     0  249M   0% /lib/init/rw
+/dev/sdb1              20G  6.1G   13G  33% /media/hd2
+none                  0.0K  0.0K  0.0K   -  /proc/fs/vmblock/mountPoint
+/dev/sdc3             592M  457M  105M  82% /media/sdcard
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# umount /dev/sdc3
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# ls
+sd1gb-piezo-mik-1977.dd  sd2gb-piezo-mik-2032.dd
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# e2fsck -fy /dev/sdc2
+e2fsck 1.41.11 (14-Mar-2010)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/sdc2: 117/128 files (5.1% non-contiguous), 989/1024 blocks
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage# e2fsck -fy /dev/sdc3
+e2fsck 1.41.11 (14-Mar-2010)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/sdc3: 20009/154000 files (4.7% non-contiguous), 486802/624896 blocks
+root@minibox:~/hd2/rtms/piezometer/plus/mikrotik/sdimage#
+
