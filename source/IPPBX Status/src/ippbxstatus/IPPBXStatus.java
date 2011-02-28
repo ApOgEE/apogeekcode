@@ -219,9 +219,10 @@ public class IPPBXStatus extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.appConf.IPPBXServerIP = txtIPPBXAddress.getText();
         this.appConf.Username = txtUsername.getText();
-        this.appConf.Password = txtPassword.getPassword().toString();
+
+        this.appConf.Password = String.valueOf(txtPassword.getPassword());
         this.appConf.Extension = txtExtension.getText();
-        this.appConf.ExtPassword = txtExtPassword.getPassword().toString();
+        this.appConf.ExtPassword = String.valueOf(txtExtPassword.getPassword());
         this.appConf.EnableLogin = chkEnableLogin.isSelected();
 
         this.appConf.UpdateConfig();

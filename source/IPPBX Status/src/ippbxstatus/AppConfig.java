@@ -34,7 +34,7 @@ public class AppConfig {
     public boolean ReadConfig() throws FileNotFoundException, IOException {
         boolean bSuccess = false;
 
-        showDebug("DEBUG: Reading Config File!");
+        showDebug("Reading Config File!");
         
         // open config file if exists
         Properties prop = new Properties();
@@ -73,18 +73,19 @@ public class AppConfig {
 
     private void showDebug(String dbgMessage) {
         if (bDebug == false) return;
-        javax.swing.JOptionPane.showMessageDialog(null, dbgMessage );
+        javax.swing.JOptionPane.showMessageDialog(null, "DEBUG: " + dbgMessage );
     }
 
     public void UpdateConfig() {
         Properties prop = new Properties();
 
-        showDebug(IPPBXServerIP.toString());
-        prop.setProperty("server", IPPBXServerIP.toString());
-        prop.setProperty("user", Username.toString());
-        prop.setProperty("password", Password.toString());
-        prop.setProperty("ext", Extension.toString());
-        prop.setProperty("extpass", ExtPassword.toString());
+        showDebug(this.Password.toString());
+
+        prop.setProperty("server", this.IPPBXServerIP.toString());
+        prop.setProperty("user", this.Username.toString());
+        prop.setProperty("password", this.Password.toString());
+        prop.setProperty("ext", this.Extension.toString());
+        prop.setProperty("extpass", this.ExtPassword.toString());
         prop.setProperty("enableLogin", Boolean.toString(EnableLogin));
 
         FileOutputStream fos;
