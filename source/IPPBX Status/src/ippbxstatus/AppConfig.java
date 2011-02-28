@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class AppConfig {
 
 
-    private boolean bDebug = true;
+    private boolean bDebug = false;
     private String ConfigFile = "ippbxstatus.conf";
 
 
@@ -71,7 +71,7 @@ public class AppConfig {
         return true;
     }
 
-    private void showDebug(String dbgMessage) {
+    public void showDebug(String dbgMessage) {
         if (bDebug == false) return;
         javax.swing.JOptionPane.showMessageDialog(null, "DEBUG: " + dbgMessage );
     }

@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -24,6 +26,21 @@ public class IPPBXStatus extends javax.swing.JFrame {
 
     /** Creates new form IPPBXStatus */
     public IPPBXStatus() {
+
+        if (System.getProperty("os.name").equals("Linux")) {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedLookAndFeelException ex) {
+                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         initComponents();
         appConf = new ippbxstatus.AppConfig();
         try {
@@ -40,6 +57,8 @@ public class IPPBXStatus extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        SetSystemTray();
         
     }
 
@@ -258,4 +277,15 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
     private ippbxstatus.AppConfig appConf;
+
+    private void SetSystemTray() {
+        // adding the app to system tray
+        if (!java.awt.SystemTray.isSupported()) {
+            appConf.showDebug("SystemTray is not supported");
+            return;
+        }
+
+
+
+    }
 }
