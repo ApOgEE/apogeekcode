@@ -48,7 +48,11 @@ public class TrayIconDemo {
 
         try {
             /* Use an appropriate Look and Feel */
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            if (System.getProperty("os.name").equals("Linux")) {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+            } else if (System.getProperty("os.name").equals("Windows 7")) {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            }
             /*
             try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
