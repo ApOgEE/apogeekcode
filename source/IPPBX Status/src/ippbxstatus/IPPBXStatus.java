@@ -27,30 +27,20 @@ public class IPPBXStatus extends javax.swing.JFrame {
     /** Creates new form IPPBXStatus */
     public IPPBXStatus() {
 
-        if (System.getProperty("os.name").equals("Linux")) {
-            try {
+        try {
+            if (System.getProperty("os.name").equals("Linux")) {
                 UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (UnsupportedLookAndFeelException ex) {
-                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if (System.getProperty("os.name").equals("Windows 7")) {
-            try {
+            } else if (System.getProperty("os.name").equals("Windows 7")) {
                 UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (UnsupportedLookAndFeelException ex) {
-                Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         initComponents();
