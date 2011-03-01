@@ -413,7 +413,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
 
     //Obtain the image URL
     protected static java.awt.Image createImage(String path, String description) {
-        java.net.URL imageURL = TrayIconDemo.class.getResource(path);
+        java.net.URL imageURL = IPPBXStatus.class.getResource(path);
 
         if (imageURL == null) {
             System.err.println("Resource not found: " + path);
