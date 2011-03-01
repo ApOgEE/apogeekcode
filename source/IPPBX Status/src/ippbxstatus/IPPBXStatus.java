@@ -313,7 +313,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private static void createAndShowGUI() {
 
         final java.awt.PopupMenu popup = new java.awt.PopupMenu();
-        final java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(createImage("bulb.gif", "tray icon"));
+        final java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(createImage("bulb.gif", "Ultratone IPPBX Status"));
         final java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
 
         // Create a popup menu components
@@ -419,6 +419,9 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 System.exit(0);
             }
         });
+
+        trayIcon.displayMessage("Ultratone IPPBX Status",
+                            "IPPBX Status logger", java.awt.TrayIcon.MessageType.INFO);
     }
 
     //Obtain the image URL
