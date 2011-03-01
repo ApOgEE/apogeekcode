@@ -11,6 +11,8 @@
 
 package ippbxstatus;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -261,6 +263,9 @@ public class IPPBXStatus extends javax.swing.JFrame {
         // TODO add your handling code here:
         // minimize to tray
         this.setVisible(false);
+
+        trayIcon.displayMessage("Ultratone IPPBX Status",
+                "IPPBX Status logger", java.awt.TrayIcon.MessageType.INFO);
     }//GEN-LAST:event_btnMinimizeActionPerformed
 
     /**
@@ -271,6 +276,15 @@ public class IPPBXStatus extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 frmMain = new IPPBXStatus();
+
+                // place the window in the middle of the screen
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                int h = frmMain.getHeight();
+                int w = frmMain.getWidth();
+                int x = (int)(dim.getWidth() - w)/2;
+                int y = (int)(dim.getHeight()-h)/2;
+                frmMain.setLocation(x, y);
+
                 frmMain.setVisible(true);
             }
         });
@@ -295,6 +309,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private ippbxstatus.AppConfig appConf;
     private static javax.swing.JFrame frmMain;
+    private static java.awt.TrayIcon trayIcon;
 
     private void SetSystemTray() {
         // adding the app to system tray
@@ -313,7 +328,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private static void createAndShowGUI() {
 
         final java.awt.PopupMenu popup = new java.awt.PopupMenu();
-        final java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(createImage("bulb.gif", "Ultratone IPPBX Status"));
+        trayIcon = new java.awt.TrayIcon(createImage("bulb.gif", "Ultratone IPPBX Status"));
         final java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
 
         // Create a popup menu components
