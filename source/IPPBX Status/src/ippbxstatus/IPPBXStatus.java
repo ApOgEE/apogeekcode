@@ -11,6 +11,7 @@
 
 package ippbxstatus;
 
+import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -90,6 +91,8 @@ public class IPPBXStatus extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Ultratone IPPBX Status");
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ultratone IPPBX Status"));
 
@@ -127,6 +130,11 @@ public class IPPBXStatus extends javax.swing.JFrame {
         });
 
         btnMinimize.setText("Minimize");
+        btnMinimize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMinimizeActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Save Settings");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -145,7 +153,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtExtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
+                        .addComponent(txtExtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -154,10 +162,10 @@ public class IPPBXStatus extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                            .addComponent(txtExtension, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                            .addComponent(txtIPPBXAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)))
+                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(txtExtension, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(txtIPPBXAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,6 +257,12 @@ public class IPPBXStatus extends javax.swing.JFrame {
         this.appConf.UpdateConfig();
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    private void btnMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeActionPerformed
+        // TODO add your handling code here:
+        // minimize to tray
+        this.setVisible(false);
+    }//GEN-LAST:event_btnMinimizeActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -256,7 +270,8 @@ public class IPPBXStatus extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new IPPBXStatus().setVisible(true);
+                frmMain = new IPPBXStatus();
+                frmMain.setVisible(true);
             }
         });
     }
@@ -279,6 +294,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
     private ippbxstatus.AppConfig appConf;
+    private static javax.swing.JFrame frmMain;
 
     private void SetSystemTray() {
         // adding the app to system tray
@@ -301,27 +317,12 @@ public class IPPBXStatus extends javax.swing.JFrame {
         final java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
 
         // Create a popup menu components
-        java.awt.MenuItem aboutItem = new java.awt.MenuItem("About");
-        java.awt.CheckboxMenuItem cb1 = new java.awt.CheckboxMenuItem("Set auto size");
-        java.awt.CheckboxMenuItem cb2 = new java.awt.CheckboxMenuItem("Set tooltip");
-        java.awt.Menu displayMenu = new java.awt.Menu("Display");
-        java.awt.MenuItem errorItem = new java.awt.MenuItem("Error");
-        java.awt.MenuItem warningItem = new java.awt.MenuItem("Warning");
-        java.awt.MenuItem infoItem = new java.awt.MenuItem("Info");
-        java.awt.MenuItem noneItem = new java.awt.MenuItem("None");
+        java.awt.MenuItem mnuSettings = new java.awt.MenuItem("Settings");
         java.awt.MenuItem exitItem = new java.awt.MenuItem("Exit");
 
         //Add components to popup menu
-        popup.add(aboutItem);
+        popup.add(mnuSettings);
         popup.addSeparator();
-        popup.add(cb1);
-        popup.add(cb2);
-        popup.addSeparator();
-        popup.add(displayMenu);
-        displayMenu.add(errorItem);
-        displayMenu.add(warningItem);
-        displayMenu.add(infoItem);
-        displayMenu.add(noneItem);
         popup.add(exitItem);
 
         trayIcon.setPopupMenu(popup);
@@ -334,13 +335,22 @@ public class IPPBXStatus extends javax.swing.JFrame {
             return;
         }
 
-        trayIcon.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                javax.swing.JOptionPane.showMessageDialog(null,
-                        "This dialog box is run from System Tray");
+        mnuSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frmMain.setVisible(true);
+                //throw new UnsupportedOperationException("Not supported yet.");
             }
         });
 
+        trayIcon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                /*javax.swing.JOptionPane.showMessageDialog(null,
+                        "This dialog box is run from System Tray");*/
+                frmMain.setVisible(true);
+            }
+        });
+
+        /*
         aboutItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 javax.swing.JOptionPane.showMessageDialog(null,
@@ -369,7 +379,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 }
             }
         });
-
+        
         java.awt.event.ActionListener listener = new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 java.awt.MenuItem item = (java.awt.MenuItem)e.getSource();
@@ -396,13 +406,13 @@ public class IPPBXStatus extends javax.swing.JFrame {
                             "This is an ordinary message", java.awt.TrayIcon.MessageType.NONE);
                 }
             }
-        };
-
+        };*/
+/*
         errorItem.addActionListener(listener);
         warningItem.addActionListener(listener);
         infoItem.addActionListener(listener);
         noneItem.addActionListener(listener);
-
+*/
         exitItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 tray.remove(trayIcon);
