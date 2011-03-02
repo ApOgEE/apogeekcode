@@ -8,13 +8,20 @@ package ippbxstatus;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 
 /**
  *
@@ -87,6 +94,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
         btnMinimize = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnLogin = new javax.swing.JButton();
+        btnStatus = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -149,6 +157,13 @@ public class IPPBXStatus extends javax.swing.JFrame {
             }
         });
 
+        btnStatus.setText("Status Log");
+        btnStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStatusActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -168,10 +183,10 @@ public class IPPBXStatus extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtExtension, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                            .addComponent(txtIPPBXAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)))
+                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                            .addComponent(txtExtension, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                            .addComponent(txtIPPBXAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)))
                     .addComponent(chkEnableLogin)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(36, 36, 36)
@@ -179,7 +194,9 @@ public class IPPBXStatus extends javax.swing.JFrame {
                             .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnMinimize, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                            .addComponent(btnMinimize, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -211,8 +228,10 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMinimize)
                     .addComponent(btnSave))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnLogin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLogin)
+                    .addComponent(btnStatus))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -235,8 +254,8 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -288,8 +307,16 @@ public class IPPBXStatus extends javax.swing.JFrame {
          * /rawman?action=AgentLogoff&Agent=101&Soft=true
          * curl http://10.1.3.75/rawman?action=AgentLogoff\&Agent=101\&soft=true
          */
-        JOptionPane.showMessageDialog(rootPane, "unfinished code!");
+        //JOptionPane.showMessageDialog(rootPane, "unfinished code!");
+        iLastID++;
+        String sID = "tid" + iLastID;
+        this.RequestLogin(sID);
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatusActionPerformed
+        // TODO add your handling code here:
+        frmLog.setVisible(true);
+    }//GEN-LAST:event_btnStatusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -310,6 +337,14 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 frmMain.setLocation(x, y);
 
                 frmMain.setVisible(true);
+
+                frmLog = new StatusLog();
+                x = (int) (dim.getWidth() - frmLog.getWidth()) / 2;
+                y = (int) (dim.getHeight() - frmLog.getHeight()) / 2;
+                frmLog.setLocation(x, y);
+                tSimple1 = new SimpleThread("Simple1", frmLog);
+                //tSimple2 = new SimpleThread("Simple2", frmLog);
+
             }
         });
     }
@@ -317,6 +352,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnMinimize;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnStatus;
     private javax.swing.JCheckBox chkEnableLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -331,9 +367,14 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
-    private ippbxstatus.AppConfig appConf;
-    private static javax.swing.JFrame frmMain;
+    private AppConfig appConf;
+    private static IPPBXStatus frmMain;
     private static java.awt.TrayIcon trayIcon;
+    public static StatusLog frmLog;
+    private int iLastID;
+    private static SimpleThread tSimple1;
+    //private static SimpleThread tSimple2;
+
 
     private void SetSystemTray() {
         // adding the app to system tray
@@ -414,5 +455,129 @@ public class IPPBXStatus extends javax.swing.JFrame {
         } else {
             return (new javax.swing.ImageIcon(imageURL, description)).getImage();
         }
+    }
+
+    /* HTTP Request to Login */
+    private void RequestLogin(final String sId) {
+        // request using new thread
+        /*
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
+            public void run() {
+                //JOptionPane.showMessageDialog(rootPane, "thread testing!");
+                for (int i = 0;i < 10; i++) {
+                    try {
+                        Thread.sleep(1000);
+                        frmLog.AppendStatus("thread sending message id: " + sId);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(IPPBXStatus.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+         */
+        //if (tSimple1 == null) {
+        new ippLogin(appConf, frmLog).start();
+        //}
+        //tSimple1.start();
+        //tSimple2.start();
+    }
+
+
+}
+
+class ippLogin extends Thread {
+    private AppConfig m_cConf ;
+    private StatusLog m_fLog;
+
+    public ippLogin(AppConfig conf, StatusLog fLog) {
+        m_cConf = conf;
+        m_fLog = fLog;
+    }
+
+    @Override
+    public void run() {
+
+        String sURL = "http://" + m_cConf.IPPBXServerIP + "/rawman?action=login&username="
+                    + m_cConf.Username + "&secret=" + m_cConf.Password;
+        String sUTF = "UTF-8";
+        // construct data
+        String sData = null;
+        try {
+
+            sData = "?action=login&username=" + URLEncoder.encode(m_cConf.Username,sUTF);
+            sData += "&secret=" + URLEncoder.encode(m_cConf.Password, sUTF);
+
+            m_fLog.AppendStatus(sData);
+
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(ippLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // send data
+        try {
+            URL url = new URL("http://" + m_cConf.IPPBXServerIP + "/rawman" + sData);
+            try {
+                URLConnection conn = url.openConnection();
+
+                //conn.setDoOutput(true);
+                //OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                //wr.write(sData);
+                //wr.flush();
+
+                // get the response
+                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    m_fLog.AppendStatus(line);
+                }
+                //wr.close();
+                rd.close();
+                String headerName=null;
+                for (int i=1; (headerName = conn.getHeaderFieldKey(i))!=null; i++) {
+                    if (headerName.equals("Set-Cookie")) {
+                        String cookie = conn.getHeaderField(i);
+                        m_fLog.AppendStatus("Set-Cookie: " + cookie);
+
+                    }
+                }
+
+
+
+
+            } catch (IOException ex) {
+                Logger.getLogger(ippLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ippLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+    }
+}
+
+
+class SimpleThread extends Thread {
+    private ippbxstatus.StatusLog m_fLog;
+    private String sID;
+
+    public SimpleThread(String str,StatusLog fLog) {
+	//super(str);
+        m_fLog = fLog;
+        sID = str;
+    }
+    @Override
+    public void run() {
+	for (int i = 0; i < 10; i++) {
+	    m_fLog.AppendStatus(i + " " + sID);
+            try {
+		sleep((int)(Math.random() * 1000));
+	    } catch (InterruptedException e) {}
+	}
+	m_fLog.AppendStatus("DONE! " + sID);
     }
 }
