@@ -76,10 +76,10 @@
                           </Group>
                           <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtPassword" pref="160" max="32767" attributes="1"/>
-                              <Component id="txtExtension" pref="160" max="32767" attributes="1"/>
-                              <Component id="txtUsername" pref="160" max="32767" attributes="1"/>
-                              <Component id="txtIPPBXAddress" alignment="0" pref="160" max="32767" attributes="1"/>
+                              <Component id="txtPassword" pref="174" max="32767" attributes="1"/>
+                              <Component id="txtExtension" pref="174" max="32767" attributes="1"/>
+                              <Component id="txtUsername" pref="174" max="32767" attributes="1"/>
+                              <Component id="txtIPPBXAddress" alignment="0" pref="174" max="32767" attributes="1"/>
                           </Group>
                       </Group>
                       <Component id="chkEnableLogin" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -90,7 +90,7 @@
                               <Component id="btnSave" alignment="0" pref="120" max="32767" attributes="1"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnMinimize" pref="117" max="32767" attributes="0"/>
+                          <Component id="btnMinimize" pref="155" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>

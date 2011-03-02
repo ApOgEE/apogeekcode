@@ -386,75 +386,12 @@ public class IPPBXStatus extends javax.swing.JFrame {
         trayIcon.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                /*javax.swing.JOptionPane.showMessageDialog(null,
-                "This dialog box is run from System Tray");*/
+                /* show main form */
                 frmMain.setVisible(true);
             }
         });
 
-        /*
-        aboutItem.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-        javax.swing.JOptionPane.showMessageDialog(null,
-        "This dialog box is run from the About menu item");
-        }
-        });
 
-        cb1.addItemListener(new java.awt.event.ItemListener() {
-        public void itemStateChanged(java.awt.event.ItemEvent e) {
-        int cb1Id = e.getStateChange();
-        if (cb1Id == java.awt.event.ItemEvent.SELECTED){
-        trayIcon.setImageAutoSize(true);
-        } else {
-        trayIcon.setImageAutoSize(false);
-        }
-        }
-        });
-
-        cb2.addItemListener(new java.awt.event.ItemListener() {
-        public void itemStateChanged(java.awt.event.ItemEvent e) {
-        int cb2Id = e.getStateChange();
-        if (cb2Id == java.awt.event.ItemEvent.SELECTED){
-        trayIcon.setToolTip("Sun TrayIcon");
-        } else {
-        trayIcon.setToolTip(null);
-        }
-        }
-        });
-        
-        java.awt.event.ActionListener listener = new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-        java.awt.MenuItem item = (java.awt.MenuItem)e.getSource();
-        //TrayIcon.MessageType type = null;
-        System.out.println(item.getLabel());
-        if ("Error".equals(item.getLabel())) {
-        //type = TrayIcon.MessageType.ERROR;
-        trayIcon.displayMessage("Sun TrayIcon Demo",
-        "This is an error message", java.awt.TrayIcon.MessageType.ERROR);
-
-        } else if ("Warning".equals(item.getLabel())) {
-        //type = TrayIcon.MessageType.WARNING;
-        trayIcon.displayMessage("Sun TrayIcon Demo",
-        "This is a warning message", java.awt.TrayIcon.MessageType.WARNING);
-
-        } else if ("Info".equals(item.getLabel())) {
-        //type = TrayIcon.MessageType.INFO;
-        trayIcon.displayMessage("Sun TrayIcon Demo",
-        "This is an info message", java.awt.TrayIcon.MessageType.INFO);
-
-        } else if ("None".equals(item.getLabel())) {
-        //type = TrayIcon.MessageType.NONE;
-        trayIcon.displayMessage("Sun TrayIcon Demo",
-        "This is an ordinary message", java.awt.TrayIcon.MessageType.NONE);
-        }
-        }
-        };*/
-        /*
-        errorItem.addActionListener(listener);
-        warningItem.addActionListener(listener);
-        infoItem.addActionListener(listener);
-        noneItem.addActionListener(listener);
-         */
         exitItem.addActionListener(new java.awt.event.ActionListener() {
 
             public void actionPerformed(java.awt.event.ActionEvent e) {
