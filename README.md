@@ -1,8 +1,5 @@
-apogeekcode - Zon kod sumber ApOgEE
-=====================================================================
-
+# apogeekcode - Zon kod sumber ApOgEE
 ## Ada apa dengan apogeekcode?
-
 
     Pengarang: M. Fauzilkamil Zainuddin <apogee@apogeek.com>
     Tajuk: APOGEEK Code Repository
