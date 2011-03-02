@@ -1,11 +1,12 @@
-**apogeekcode** - Zon kod sumber ApOgEE
+apogeekcode - Zon kod sumber ApOgEE
 =====================================================================
 
-Ada apa dengan apogeekcode ?
-----------------------------
-> Pengarang: M. Fauzilkamil Zainuddin <apogee@apogeek.com>
-> Tajuk: APOGEEK Code Repository
-> Copyright (C) 2011, M. Fauzilkamil Zainuddin
+# Ada apa dengan apogeekcode?
+
+
+  Pengarang: M. Fauzilkamil Zainuddin <apogee@apogeek.com>
+  Tajuk: APOGEEK Code Repository
+  Copyright (C) 2011, M. Fauzilkamil Zainuddin
 
 **apogeekcode** ini adalah repo tempat simpan kod sumber yang saya buat untuk kegunaan macam-macam.
 
