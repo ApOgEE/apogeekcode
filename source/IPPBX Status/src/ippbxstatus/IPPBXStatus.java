@@ -1,14 +1,8 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * IPPBXStatus.java
- *
  * Created on Feb 28, 2011, 1:30:36 PM
+ *
  */
-
 package ippbxstatus;
 
 import java.awt.Dimension;
@@ -24,7 +18,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
- * @author apogee
+ * @author M. Fauzilkamil Zainuddin <jerungkun@gmail.com>
+ *
  */
 public class IPPBXStatus extends javax.swing.JFrame {
 
@@ -51,11 +46,11 @@ public class IPPBXStatus extends javax.swing.JFrame {
         appConf = new ippbxstatus.AppConfig();
         try {
             appConf.ReadConfig();
-            this.txtIPPBXAddress.setText(appConf.IPPBXServerIP) ;
-            this.txtUsername.setText(appConf.Username) ;
-            this.txtPassword.setText(appConf.Password) ;
-            this.txtExtension.setText(appConf.Extension) ;
-            this.txtExtPassword.setText(appConf.ExtPassword) ;
+            this.txtIPPBXAddress.setText(appConf.IPPBXServerIP);
+            this.txtUsername.setText(appConf.Username);
+            this.txtPassword.setText(appConf.Password);
+            this.txtExtension.setText(appConf.Extension);
+            this.txtExtPassword.setText(appConf.ExtPassword);
             this.chkEnableLogin.setSelected(appConf.EnableLogin);
 
         } catch (FileNotFoundException ex) {
@@ -65,7 +60,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
         }
 
         SetSystemTray();
-        
+
     }
 
     /** This method is called from within the constructor to
@@ -297,11 +292,12 @@ public class IPPBXStatus extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 frmMain = new IPPBXStatus();
 
@@ -309,15 +305,14 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 int h = frmMain.getHeight();
                 int w = frmMain.getWidth();
-                int x = (int)(dim.getWidth() - w)/2;
-                int y = (int)(dim.getHeight()-h)/2;
+                int x = (int) (dim.getWidth() - w) / 2;
+                int y = (int) (dim.getHeight() - h) / 2;
                 frmMain.setLocation(x, y);
 
                 frmMain.setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnMinimize;
@@ -348,6 +343,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
         }
 
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
             public void run() {
                 createAndShowGUI();
             }
@@ -380,6 +376,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
         }
 
         mnuSettings.addActionListener(new java.awt.event.ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 frmMain.setVisible(true);
                 //throw new UnsupportedOperationException("Not supported yet.");
@@ -387,77 +384,79 @@ public class IPPBXStatus extends javax.swing.JFrame {
         });
 
         trayIcon.addActionListener(new java.awt.event.ActionListener() {
+
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 /*javax.swing.JOptionPane.showMessageDialog(null,
-                        "This dialog box is run from System Tray");*/
+                "This dialog box is run from System Tray");*/
                 frmMain.setVisible(true);
             }
         });
 
         /*
         aboutItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                javax.swing.JOptionPane.showMessageDialog(null,
-                        "This dialog box is run from the About menu item");
-            }
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+        "This dialog box is run from the About menu item");
+        }
         });
 
         cb1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent e) {
-                int cb1Id = e.getStateChange();
-                if (cb1Id == java.awt.event.ItemEvent.SELECTED){
-                    trayIcon.setImageAutoSize(true);
-                } else {
-                    trayIcon.setImageAutoSize(false);
-                }
-            }
+        public void itemStateChanged(java.awt.event.ItemEvent e) {
+        int cb1Id = e.getStateChange();
+        if (cb1Id == java.awt.event.ItemEvent.SELECTED){
+        trayIcon.setImageAutoSize(true);
+        } else {
+        trayIcon.setImageAutoSize(false);
+        }
+        }
         });
 
         cb2.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent e) {
-                int cb2Id = e.getStateChange();
-                if (cb2Id == java.awt.event.ItemEvent.SELECTED){
-                    trayIcon.setToolTip("Sun TrayIcon");
-                } else {
-                    trayIcon.setToolTip(null);
-                }
-            }
+        public void itemStateChanged(java.awt.event.ItemEvent e) {
+        int cb2Id = e.getStateChange();
+        if (cb2Id == java.awt.event.ItemEvent.SELECTED){
+        trayIcon.setToolTip("Sun TrayIcon");
+        } else {
+        trayIcon.setToolTip(null);
+        }
+        }
         });
         
         java.awt.event.ActionListener listener = new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                java.awt.MenuItem item = (java.awt.MenuItem)e.getSource();
-                //TrayIcon.MessageType type = null;
-                System.out.println(item.getLabel());
-                if ("Error".equals(item.getLabel())) {
-                    //type = TrayIcon.MessageType.ERROR;
-                    trayIcon.displayMessage("Sun TrayIcon Demo",
-                            "This is an error message", java.awt.TrayIcon.MessageType.ERROR);
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+        java.awt.MenuItem item = (java.awt.MenuItem)e.getSource();
+        //TrayIcon.MessageType type = null;
+        System.out.println(item.getLabel());
+        if ("Error".equals(item.getLabel())) {
+        //type = TrayIcon.MessageType.ERROR;
+        trayIcon.displayMessage("Sun TrayIcon Demo",
+        "This is an error message", java.awt.TrayIcon.MessageType.ERROR);
 
-                } else if ("Warning".equals(item.getLabel())) {
-                    //type = TrayIcon.MessageType.WARNING;
-                    trayIcon.displayMessage("Sun TrayIcon Demo",
-                            "This is a warning message", java.awt.TrayIcon.MessageType.WARNING);
+        } else if ("Warning".equals(item.getLabel())) {
+        //type = TrayIcon.MessageType.WARNING;
+        trayIcon.displayMessage("Sun TrayIcon Demo",
+        "This is a warning message", java.awt.TrayIcon.MessageType.WARNING);
 
-                } else if ("Info".equals(item.getLabel())) {
-                    //type = TrayIcon.MessageType.INFO;
-                    trayIcon.displayMessage("Sun TrayIcon Demo",
-                            "This is an info message", java.awt.TrayIcon.MessageType.INFO);
+        } else if ("Info".equals(item.getLabel())) {
+        //type = TrayIcon.MessageType.INFO;
+        trayIcon.displayMessage("Sun TrayIcon Demo",
+        "This is an info message", java.awt.TrayIcon.MessageType.INFO);
 
-                } else if ("None".equals(item.getLabel())) {
-                    //type = TrayIcon.MessageType.NONE;
-                    trayIcon.displayMessage("Sun TrayIcon Demo",
-                            "This is an ordinary message", java.awt.TrayIcon.MessageType.NONE);
-                }
-            }
+        } else if ("None".equals(item.getLabel())) {
+        //type = TrayIcon.MessageType.NONE;
+        trayIcon.displayMessage("Sun TrayIcon Demo",
+        "This is an ordinary message", java.awt.TrayIcon.MessageType.NONE);
+        }
+        }
         };*/
-/*
+        /*
         errorItem.addActionListener(listener);
         warningItem.addActionListener(listener);
         infoItem.addActionListener(listener);
         noneItem.addActionListener(listener);
-*/
+         */
         exitItem.addActionListener(new java.awt.event.ActionListener() {
+
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 tray.remove(trayIcon);
                 System.exit(0);
@@ -465,7 +464,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
         });
 
         trayIcon.displayMessage("Ultratone IPPBX Status",
-                            "IPPBX Status logger", java.awt.TrayIcon.MessageType.INFO);
+                "IPPBX Status logger", java.awt.TrayIcon.MessageType.INFO);
     }
 
     //Obtain the image URL
@@ -479,5 +478,4 @@ public class IPPBXStatus extends javax.swing.JFrame {
             return (new javax.swing.ImageIcon(imageURL, description)).getImage();
         }
     }
-
 }

@@ -15,7 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  *
- * @author apogee
+ * @author M. Fauzilkamil Zainuddin <jerungkun@gmail.com>
+ * 
  */
 public class AppConfig {
 
