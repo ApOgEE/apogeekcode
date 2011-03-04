@@ -1,5 +1,5 @@
 # myperl - kod sumber perl ikut suka hati
-## Apa kejada myperl ni?
+## Apa kejadah myperl ni?
 
     Pengarang: M. Fauzilkamil Zainuddin <apogee@apogeek.com>
     Tajuk: APOGEEK Code - myperl
