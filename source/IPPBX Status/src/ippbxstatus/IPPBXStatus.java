@@ -19,6 +19,8 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -91,11 +93,15 @@ public class IPPBXStatus extends javax.swing.JFrame {
         txtExtension = new javax.swing.JTextField();
         txtExtPassword = new javax.swing.JPasswordField();
         chkEnableLogin = new javax.swing.JCheckBox();
-        btnMinimize = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnLogin = new javax.swing.JButton();
-        btnStatus = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        mnuMain = new javax.swing.JMenuBar();
+        mnuApp = new javax.swing.JMenu();
+        mnuShowLog = new javax.swing.JMenuItem();
+        mnuSave = new javax.swing.JMenuItem();
+        mnuSep1 = new javax.swing.JPopupMenu.Separator();
+        mnuExit = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ultratone IPPBX Status");
@@ -136,13 +142,6 @@ public class IPPBXStatus extends javax.swing.JFrame {
             }
         });
 
-        btnMinimize.setText("Minimize");
-        btnMinimize.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMinimizeActionPerformed(evt);
-            }
-        });
-
         btnSave.setText("Save Settings");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,13 +156,6 @@ public class IPPBXStatus extends javax.swing.JFrame {
             }
         });
 
-        btnStatus.setText("Status Log");
-        btnStatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStatusActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -174,7 +166,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtExtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
+                        .addComponent(txtExtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -183,20 +175,15 @@ public class IPPBXStatus extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                            .addComponent(txtExtension, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                            .addComponent(txtIPPBXAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)))
+                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                            .addComponent(txtExtension, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                            .addComponent(txtIPPBXAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)))
                     .addComponent(chkEnableLogin)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                            .addComponent(btnMinimize, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))))
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -226,16 +213,46 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 .addComponent(chkEnableLogin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnMinimize)
-                    .addComponent(btnSave))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogin)
-                    .addComponent(btnStatus))
+                    .addComponent(btnSave))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ippbxstatus/ippbxstatus.png"))); // NOI18N
+
+        mnuApp.setText("Application");
+
+        mnuShowLog.setText("Show Status Log");
+        mnuShowLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuShowLogActionPerformed(evt);
+            }
+        });
+        mnuApp.add(mnuShowLog);
+
+        mnuSave.setText("Save Settings");
+        mnuSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSaveActionPerformed(evt);
+            }
+        });
+        mnuApp.add(mnuSave);
+
+        mnuSep1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        mnuSep1.setForeground(new java.awt.Color(1, 1, 1));
+        mnuApp.add(mnuSep1);
+
+        mnuExit.setText("Exit");
+        mnuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExitActionPerformed(evt);
+            }
+        });
+        mnuApp.add(mnuExit);
+
+        mnuMain.add(mnuApp);
+
+        setJMenuBar(mnuMain);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -273,8 +290,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsernameActionPerformed
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
+    private void SaveSettings() {
         this.appConf.IPPBXServerIP = txtIPPBXAddress.getText();
         this.appConf.Username = txtUsername.getText();
 
@@ -284,16 +300,13 @@ public class IPPBXStatus extends javax.swing.JFrame {
         this.appConf.EnableLogin = chkEnableLogin.isSelected();
 
         this.appConf.UpdateConfig();
-    }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void btnMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinimizeActionPerformed
+    }
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        // minimize to tray
-        this.setVisible(false);
-
-        trayIcon.displayMessage("Ultratone IPPBX Status",
-                "IPPBX Status logger", java.awt.TrayIcon.MessageType.INFO);
-    }//GEN-LAST:event_btnMinimizeActionPerformed
+        this.SaveSettings();
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
@@ -313,10 +326,20 @@ public class IPPBXStatus extends javax.swing.JFrame {
         this.RequestLogin(sID);
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    private void btnStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatusActionPerformed
+    private void mnuShowLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuShowLogActionPerformed
         // TODO add your handling code here:
         frmLog.setVisible(true);
-    }//GEN-LAST:event_btnStatusActionPerformed
+    }//GEN-LAST:event_mnuShowLogActionPerformed
+
+    private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_mnuExitActionPerformed
+
+    private void mnuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSaveActionPerformed
+        // TODO add your handling code here:
+        this.SaveSettings();
+    }//GEN-LAST:event_mnuSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,10 +358,15 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 int x = (int) (dim.getWidth() - w) / 2;
                 int y = (int) (dim.getHeight() - h) / 2;
                 frmMain.setLocation(x, y);
-
+                ImageIcon ic = new ImageIcon(getClass().getResource("icon.png"));
+                java.awt.Image im = ic.getImage();
+                frmMain.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                frmMain.setIconImage(im);
                 frmMain.setVisible(true);
 
                 frmLog = new StatusLog();
+                frmLog.setIconImage(im);
+                frmLog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 x = (int) (dim.getWidth() - frmLog.getWidth()) / 2;
                 y = (int) (dim.getHeight() - frmLog.getHeight()) / 2;
                 frmLog.setLocation(x, y);
@@ -350,9 +378,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
-    private javax.swing.JButton btnMinimize;
     private javax.swing.JButton btnSave;
-    private javax.swing.JButton btnStatus;
     private javax.swing.JCheckBox chkEnableLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -361,6 +387,12 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenu mnuApp;
+    private javax.swing.JMenuItem mnuExit;
+    private javax.swing.JMenuBar mnuMain;
+    private javax.swing.JMenuItem mnuSave;
+    private javax.swing.JPopupMenu.Separator mnuSep1;
+    private javax.swing.JMenuItem mnuShowLog;
     private javax.swing.JPasswordField txtExtPassword;
     private javax.swing.JTextField txtExtension;
     private javax.swing.JTextField txtIPPBXAddress;
@@ -394,7 +426,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private static void createAndShowGUI() {
 
         final java.awt.PopupMenu popup = new java.awt.PopupMenu();
-        trayIcon = new java.awt.TrayIcon(createImage("bulb.gif", "Ultratone IPPBX Status"));
+        trayIcon = new java.awt.TrayIcon(createImage("icon.png", "Ultratone IPPBX Status"));
         final java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
 
         // Create a popup menu components
@@ -520,18 +552,12 @@ class ippLogin extends Thread {
             try {
                 URLConnection conn = url.openConnection();
 
-                //conn.setDoOutput(true);
-                //OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                //wr.write(sData);
-                //wr.flush();
-
                 // get the response
                 BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String line;
                 while ((line = rd.readLine()) != null) {
                     m_fLog.AppendStatus(line);
                 }
-                //wr.close();
                 rd.close();
                 String headerName=null;
                 for (int i=1; (headerName = conn.getHeaderFieldKey(i))!=null; i++) {
