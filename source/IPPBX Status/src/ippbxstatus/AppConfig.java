@@ -31,6 +31,7 @@ public class AppConfig {
     public String Extension = "";
     public String ExtPassword = "";
     public boolean EnableLogin = true;
+    public boolean LoggedIn = false;
 
     public boolean ReadConfig() throws FileNotFoundException, IOException {
         boolean bSuccess = false;
