@@ -1,9 +1,0 @@
-<?php
-/* database configuration file */
-
-$dbname = "mya2billing";
-$dbuser = "root";
-$dbpass = "dragpass443344";
-$dbhost = "localhost";
-
-?>
