@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -106,6 +107,8 @@ public class IPPBXStatus extends javax.swing.JFrame {
         mnuSave = new javax.swing.JMenuItem();
         mnuSep1 = new javax.swing.JPopupMenu.Separator();
         mnuExit = new javax.swing.JMenuItem();
+        mnuHelp = new javax.swing.JMenu();
+        mnuAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ultratone IPPBX Status");
@@ -262,6 +265,18 @@ public class IPPBXStatus extends javax.swing.JFrame {
 
         mnuMain.add(mnuApp);
 
+        mnuHelp.setText("Help");
+
+        mnuAbout.setText("About");
+        mnuAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAboutActionPerformed(evt);
+            }
+        });
+        mnuHelp.add(mnuAbout);
+
+        mnuMain.add(mnuHelp);
+
         setJMenuBar(mnuMain);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -330,6 +345,15 @@ public class IPPBXStatus extends javax.swing.JFrame {
         this.SaveSettings();
     }//GEN-LAST:event_mnuSaveActionPerformed
 
+    private void mnuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAboutActionPerformed
+        String sAbout;
+
+        sAbout = "IPPBX Status Logger\n\nVersion: " + APP_VERSION + "\n\nThis application can automatically login\n";
+        sAbout += "and logout from IPPBX server.";
+
+        JOptionPane.showMessageDialog(rootPane, sAbout);
+    }//GEN-LAST:event_mnuAboutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -380,8 +404,10 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblLoginStatus;
     private javax.swing.JLabel lblServer;
+    private javax.swing.JMenuItem mnuAbout;
     private javax.swing.JMenu mnuApp;
     private javax.swing.JMenuItem mnuExit;
+    private javax.swing.JMenu mnuHelp;
     private javax.swing.JMenuBar mnuMain;
     private javax.swing.JMenuItem mnuSave;
     private javax.swing.JPopupMenu.Separator mnuSep1;
@@ -397,6 +423,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private static IPPBXStatus frmMain;
     private static java.awt.TrayIcon trayIcon;
     public static StatusLog frmLog;
+    private String APP_VERSION = "0.0.2";
 
     private void SetSystemTray() {
         // adding the app to system tray
