@@ -781,7 +781,6 @@ class ippLogin extends Thread {
     private AppConfig m_cConf ;
     private StatusLog m_fLog;
     private IPPBXStatus m_fStat;
-    private String m_sSavedCookie;
     private boolean m_bToLogin = true;
 
     public ippLogin(AppConfig conf, StatusLog fLog, IPPBXStatus fStat, boolean bLogin) {
