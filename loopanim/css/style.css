@@ -1,0 +1,66 @@
+/*
+ * CSS by M. Fauzilkamil Zainuddin <apogee@apogeek.com>
+ */
+ 
+* {
+	font-family: Arial;
+}
+ 
+body {
+	background-color:#000000;
+	color:#888888;
+	font-size:13px;
+	margin: 0px;
+	padding:0px;
+}
+ 
+a {
+	color:#ffff00;
+	text-decoration:none;
+}
+ 
+a:visited {
+	color:#555500;
+}
+
+a:hover {
+	color:#995500;
+	text-decoration:underline;
+}
+
+h1 {
+	margin:0px;
+}
+
+#sitewrap {
+	background-color:#222222;
+	width:920px;
+	min-height:500px;
+	margin: 0 auto;
+}
+
+#headwrap {
+	background-color:#111111;
+	height:30px;
+	padding:10px;
+}
+
+#headwrap h1 {
+	font-size:20px;
+	color:#553300;
+}
+
+#contentwrap {
+	min-height:500px;
+}
+
+#footwrap {
+	height:20px;
+	background-color:#111111;
+	padding:10px;
+	margin:0px;
+}
+
+#footwrap p {
+	margin:0;
+}

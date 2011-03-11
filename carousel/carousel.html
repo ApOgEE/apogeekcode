@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	
+<head>
+	<title>jQuery UI Carousel - APOGEEK Testing sample</title>
+	<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/ui.core.js"></script>
+	<script type="text/javascript" src="js/ui.carousel.js"></script>
+	<link type="text/css" href="css/style.css" rel="stylesheet" />
+	<style type="text/css">
+	
+		.demo {
+			border: 1px solid #eee;
+			background: url("images/anim_bg.jpg");
+			position:relative;
+			width:920px;
+			margin:0 auto;
+		}
+		#carousel { position: relative; height: 350px; margin: 0; padding: 0; }
+		#carousel li { float: left; cursor: pointer; cursor: hand; list-style: none; margin: 0; padding: 0; width: 128px; height: 128px; }
+		#carousel li img { height: 100%; width: 100%; border: 0 none;}	
+	
+		#infobox {position:absolute; top:20px; left: 350px; height:300px; width:650px; z-index:100; margin:0 0 -100px -150px; background:#FFF; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; opacity:0.8;}
+		#infogambar { display:block; position:relative; padding:10px;}
+		#infogambar_kompas { display:block; position:relative; padding:10px;}
+		
+		/* The dimmed background when the info box is showing */	
+		#fade_bg{ position:absolute; top:0;left:0;z-index:99; width:100%; height:100%; background:url('images/dim.png'); display:none;}
+		img{ border: none; }
+		/* Close button for info box */
+		span.close{position:absolute; height:30px; top:5px; right:5px; z-index:10;}
+		
+	</style>
+	<script type="text/javascript">
+	$(function() {
+		//You don't need this timeout in your pages - Safari has stupid issues with our demo system
+		window.setTimeout(function() {
+			
+			$("#carousel").carousel({
+				tilt: 50,
+				pausable: true,
+				handle: $("#carousel").parent()
+			});
+			
+			var offset = $('div.demo').offset(), radius = 200, distance = 0.7, size = 128;
+			$('div.demo')
+				.bind($.browser.mozilla ? 'DOMMouseScroll' : 'mousewheel', function(event) {
+
+					if ( event.wheelDelta ) delta = event.wheelDelta/120;
+					if ( event.detail     ) delta = -event.detail/3;
+					if ( $.browser.opera  ) delta = -event.wheelDelta;
+					
+					radius += delta;
+					size += delta * 0.66;
+
+					$("#carousel").carousel('option', {
+						radius: radius,
+						width: size,
+						height: size
+					});
+
+					event.preventDefault();
+				})
+				.bind('mousemove', function(event) {
+					var position = event.pageY - offset.top;
+					$("#carousel").carousel('option', 'tilt', ((position / this.offsetHeight) - 0.5) * -200);
+			});
+			
+		}, $.browser.safari ? 100 : 0);
+	});
+	</script>
+	
+	
+	<script type="text/javascript">
+		/* click animation */
+		$(document).ready(function(){
+			//Hide all item descriptions in the info box
+			$("#infobox > div").css("display", "none");
+			$("#infobox").css("display", "none");
+			
+			//Call in the info box
+			$(".more a").click(function(){
+				//$("#infobox").animate({bottom: '233px' }, 300);
+				//$("#infobox").animate({"left": "350px"}, 300);
+				//$("#carousel").carousel().pause();
+				$("cbutton").show();
+				$("#infobox").slideDown(200);
+				$("#fade_bg").fadeIn();
+				return false;
+			});
+
+      		//Show description for selected item
+      		$("#vespa1 a").click(function(){
+				$("#infogambar").show();
+			});
+      		$("#vespa2 a").click(function(){
+				$("#infogambar_kompas").show();
+			});
+
+			//Remove background, info box and hide all descriptions
+			$("#fade_bg, .close").click(function(){
+				$("#fade_bg").fadeOut();
+				$("#infobox").slideUp(200);
+				$("#infobox > div").css("display", "none");
+				return false;
+			});
+
+		});
+	</script>
+</head>
+<body>
+<div class="demo">
+
+<ul id="carousel">
+	<li class="more" id="vespa1"><a href="#"><img src="images/1.png" alt="" /></a></li>		
+	<li class="more" id="vespa2"><a href="#"><img src="images/2.png" alt="" /></a></li>		
+	<li><img src="images/3.png" alt="" /></li>		
+	<li><img src="images/4.png" alt="" /></li>		
+	<li><img src="images/5.png" alt="" /></li>		
+	<li><img src="images/6.png" alt="" /></li>		
+	<li><img src="images/7.png" alt="" /></li>		
+	<li><img src="images/8.png" alt="" /></li>
+</ul>
+<!-- Info Boxes -->
+
+<div id="infobox">
+			<span class="close"><a href="#"><img src="images/close.png"/></a></span>
+			<br/>
+			<div id="infogambar">
+				<h3>Spesifikasi Kenderaan Senyum</h3>
+				<table>
+					<tr><td>item</td><td>Desc</td></tr>
+					<tr><td>Type</td><td>Vandetta</td></tr>
+					<tr><td>Model</td><td>Lupara</td></tr>
+					<tr><td>Color</td><td>Red</td></tr>
+					<tr><td>Make</td><td>2011</td></tr>
+					<tr><td>Features</td><td>Super Sonic</td></tr>
+				</table>
+				<p>
+				<a href="http://apogeek.com">APOGEEK Creative Solutions</a>
+				testing 123</p>
+			</div>
+			<div id="infogambar_kompas">
+				<h3>Spesifikasi Kompas Hitam</h3>
+				<table>
+					<tr><td>item</td><td>Desc</td></tr>
+					<tr><td>Type</td><td>Vandetta</td></tr>
+					<tr><td>Model</td><td>Lupara</td></tr>
+					<tr><td>Color</td><td>Red</td></tr>
+					<tr><td>Make</td><td>2011</td></tr>
+					<tr><td>Features</td><td>Super Sonic</td></tr>
+				</table>
+				<p>
+				<a href="http://apogeek.com">APOGEEK Creative Solutions</a>
+				testing 123</p>
+			</div>
+
+</div>
+<!-- Dimmed Background -->
+<div id="fade_bg">&nbsp;</div>
+
+</div><!-- End demo -->
+
+<div class="demo-description">
+
+<p>
+	This is a carousel sample code. Stolen somewhere from the internet. 
+</p>
+
+</div><!-- End demo-description -->
+
+</body>
+</html>
