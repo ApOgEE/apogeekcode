@@ -72,6 +72,13 @@ public class IPPBXStatus extends javax.swing.JFrame {
 
         SetSystemTray();
 
+        CheckIdle = new CheckUserIdle(5);
+
+        CheckIdle.addIdleListener(new MyEventListener() {
+            public void myEventOccurred(IdleEvent evt) {
+                idleEventOccured(evt);
+            }
+        });
     }
 
     /** This method is called from within the constructor to
@@ -326,6 +333,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
         procLogin pl = new procLogin(appConf, frmLog, this);
         pl.Loginout(false);
 
+        CheckIdle.StopCheck();
         System.exit(0);
     }
 
@@ -354,6 +362,18 @@ public class IPPBXStatus extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(rootPane, sAbout);
     }//GEN-LAST:event_mnuAboutActionPerformed
 
+    private void idleEventOccured(IdleEvent evt) {
+        Object obj = evt.getSource();
+        if (((CheckUserIdle) obj).is_idle == 0) {
+            frmLog.AppendStatus("User is active.");
+            //System.out.println("User is active.");
+            SetTrayActive();
+        } else {
+            frmLog.AppendStatus("User is idle.");
+            //System.out.println("User is idle.");
+            SetTrayIdle();
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -387,7 +407,6 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 if (appConf.EnableLogin == true) {
                     frmMain.RequestLogin(true);
                 }
-
             }
         });
     }
@@ -424,6 +443,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private static java.awt.TrayIcon trayIcon;
     public static StatusLog frmLog;
     private String APP_VERSION = "0.0.2";
+    private CheckUserIdle CheckIdle;
 
     private void SetSystemTray() {
         // adding the app to system tray
@@ -440,10 +460,19 @@ public class IPPBXStatus extends javax.swing.JFrame {
         });
     }
 
+    private void SetTrayIdle() {
+        trayIcon.setImage(createImage("icon-idle.png", "Ultratone IPPBX Status"));
+    }
+
+    private void SetTrayActive() {
+        trayIcon.setImage(createImage("icon.png", "Ultratone IPPBX Status"));
+    }
+
     private static void createAndShowGUI() {
 
         final java.awt.PopupMenu popup = new java.awt.PopupMenu();
         trayIcon = new java.awt.TrayIcon(createImage("icon.png", "Ultratone IPPBX Status"));
+        
         final java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
 
         // Create a popup menu components
@@ -520,6 +549,10 @@ public class IPPBXStatus extends javax.swing.JFrame {
         txtLoginStatus.setText(sData);
     }
 
+    private void RequestStatus() {
+        new ippStatus(appConf, frmLog, frmMain).start();
+    }
+
 }
 
 class procLogin {
@@ -535,11 +568,94 @@ class procLogin {
         m_fStat = fStat;
     }
 
+    public void RequestAgentStatus() {
+        // login/logout
+        String sURL = "http://" + m_cConf.IPPBXServerIP + "/rawman?action=login&username="
+                    + m_cConf.Username + "&secret=" + m_cConf.Password;
+        String sUTF = "UTF-8";
+
+        if ((m_cConf.IPPBXServerIP == null ? "" == null : m_cConf.IPPBXServerIP.equals("")) || (m_cConf.Username == null ? "" == null : m_cConf.Username.equals(""))) {
+            return;
+        }
+
+        // construct data
+        String sData = null;
+        try {
+
+            sData = "?action=login&username=" + URLEncoder.encode(m_cConf.Username,sUTF);
+            sData += "&secret=" + URLEncoder.encode(m_cConf.Password, sUTF);
+
+            m_fLog.AppendStatus(sData);
+
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(procLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        /* send data */
+        try {
+            URL url = new URL("http://" + m_cConf.IPPBXServerIP + "/rawman" + sData);
+            try {
+                URLConnection conn = url.openConnection();
+
+                // get the response
+                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                int j=0;
+                boolean bSuccess = false;
+                while ((line = rd.readLine()) != null) {
+                    j++;
+                    m_fLog.AppendStatus(j + ": " + line);
+                    if (Pattern.matches("^Response: Success", line)) {
+                        m_fLog.AppendStatus("Success");
+                    } else if (Pattern.matches("^Message: Authentication accepted", line)) {
+                        m_fLog.AppendStatus("Authentication accepted");
+
+                        bSuccess = true;
+                    }
+                }
+                rd.close();
+                String headerName=null;
+                for (int i=1; (headerName = conn.getHeaderFieldKey(i))!=null; i++) {
+                    if (headerName.equals("Set-Cookie")) {
+                        String cookie = conn.getHeaderField(i);
+                        m_fLog.AppendStatus("Set-Cookie: " + cookie);
+
+                        if (bSuccess == true) {
+                            // save the cookie
+                            this.SaveCookie(cookie);
+                        }
+
+                    } else {
+                        if (headerName.equals("Server")) {
+                            m_fStat.SetServerLabel(conn.getHeaderField(i));
+                        }
+                        m_fLog.AppendStatus("h: " + headerName + " f: " + conn.getHeaderField(i));
+                    }
+                }
+
+                // get agent status
+                this.GetAgentStatus();
+
+
+            } catch (IOException ex) {
+                Logger.getLogger(procLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(procLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void Loginout(boolean bLogin) {
         // login/logout 
         String sURL = "http://" + m_cConf.IPPBXServerIP + "/rawman?action=login&username="
                     + m_cConf.Username + "&secret=" + m_cConf.Password;
         String sUTF = "UTF-8";
+
+        if ((m_cConf.IPPBXServerIP == null ? "" == null : m_cConf.IPPBXServerIP.equals("")) || (m_cConf.Username == null ? "" == null : m_cConf.Username.equals(""))) {
+            return;
+        }
+
         // construct data
         String sData = null;
         try {
@@ -826,3 +942,23 @@ class ippLogin extends Thread {
     }
 }
 
+class ippStatus extends Thread {
+    private AppConfig m_cConf ;
+    private StatusLog m_fLog;
+    private IPPBXStatus m_fStat;
+    private boolean m_bToLogin = true;
+
+    public ippStatus(AppConfig conf, StatusLog fLog, IPPBXStatus fStat) {
+        m_cConf = conf;
+        m_fLog = fLog;
+        m_fStat = fStat;
+    }
+
+    @Override
+    public void run() {
+        procLogin pl = new procLogin(m_cConf, m_fLog, m_fStat);
+
+        pl.RequestAgentStatus();
+
+    }
+}
