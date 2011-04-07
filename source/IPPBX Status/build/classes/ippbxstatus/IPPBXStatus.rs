@@ -1,3 +1,0 @@
-ippbxstatus.ippLogin
-ippbxstatus.IPPBXStatus
-ippbxstatus.procLogin

@@ -316,15 +316,15 @@ public class IPPBXStatus extends javax.swing.JFrame {
     }//GEN-LAST:event_chkEnableLoginActionPerformed
 
     private void SaveSettings() {
-        this.appConf.IPPBXServerIP = txtIPPBXAddress.getText();
-        this.appConf.Username = txtUsername.getText();
+        IPPBXStatus.appConf.IPPBXServerIP = txtIPPBXAddress.getText();
+        IPPBXStatus.appConf.Username = txtUsername.getText();
 
-        this.appConf.Password = String.valueOf(txtPassword.getPassword());
-        this.appConf.Extension = txtExtension.getText();
-        this.appConf.ExtPassword = String.valueOf(txtExtPassword.getPassword());
-        this.appConf.EnableLogin = chkEnableLogin.isSelected();
+        IPPBXStatus.appConf.Password = String.valueOf(txtPassword.getPassword());
+        IPPBXStatus.appConf.Extension = txtExtension.getText();
+        IPPBXStatus.appConf.ExtPassword = String.valueOf(txtExtPassword.getPassword());
+        IPPBXStatus.appConf.EnableLogin = chkEnableLogin.isSelected();
 
-        this.appConf.UpdateConfig();
+        IPPBXStatus.appConf.UpdateConfig();
 
     }
 
@@ -339,6 +339,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         this.SaveSettings();
+        this.RequestLogin(chkEnableLogin.isSelected());
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void mnuShowLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuShowLogActionPerformed
@@ -462,10 +463,14 @@ public class IPPBXStatus extends javax.swing.JFrame {
 
     private void SetTrayIdle() {
         trayIcon.setImage(createImage("icon-idle.png", "Ultratone IPPBX Status"));
+        this.RequestLogin(false);
     }
 
     private void SetTrayActive() {
         trayIcon.setImage(createImage("icon.png", "Ultratone IPPBX Status"));
+        if (IPPBXStatus.appConf.EnableLogin == true) {
+            this.RequestLogin(chkEnableLogin.isSelected());
+        }
     }
 
     private static void createAndShowGUI() {
