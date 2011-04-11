@@ -397,7 +397,10 @@ public class IPPBXStatus extends javax.swing.JFrame {
                 java.awt.Image im = ic.getImage();
                 frmMain.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 frmMain.setIconImage(im);
-                frmMain.setVisible(true);
+
+                if (appConf.IPPBXServerIP == null ? "" == null : appConf.IPPBXServerIP.equals("")) {
+                    frmMain.setVisible(true);
+                }
 
                 frmLog.setIconImage(im);
                 frmLog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
