@@ -132,7 +132,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtExtPassword" pref="132" max="32767" attributes="0"/>
+                                  <Component id="txtExtPassword" pref="174" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -143,10 +143,10 @@
                                   </Group>
                                   <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtPassword" pref="131" max="32767" attributes="1"/>
-                                      <Component id="txtExtension" pref="131" max="32767" attributes="1"/>
-                                      <Component id="txtUsername" pref="131" max="32767" attributes="1"/>
-                                      <Component id="txtIPPBXAddress" alignment="0" pref="131" max="32767" attributes="1"/>
+                                      <Component id="txtPassword" pref="159" max="32767" attributes="1"/>
+                                      <Component id="txtExtension" pref="159" max="32767" attributes="1"/>
+                                      <Component id="txtUsername" pref="159" max="32767" attributes="1"/>
+                                      <Component id="txtIPPBXAddress" alignment="0" pref="159" max="32767" attributes="1"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -154,18 +154,18 @@
                                       <Component id="chkEnableLogin" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblServer" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="49" max="32767" attributes="0"/>
+                                  <EmptySpace pref="73" max="32767" attributes="0"/>
                                   <Component id="btnSave" min="-2" pref="120" max="-2" attributes="1"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="lblLoginStatus" pref="90" max="32767" attributes="0"/>
+                          <Component id="lblLoginStatus" pref="92" max="32767" attributes="0"/>
                           <EmptySpace min="-2" pref="196" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Component id="jScrollPane1" pref="274" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="278" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>

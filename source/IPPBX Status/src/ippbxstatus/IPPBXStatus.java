@@ -446,7 +446,7 @@ public class IPPBXStatus extends javax.swing.JFrame {
     private static IPPBXStatus frmMain;
     private static java.awt.TrayIcon trayIcon;
     public static StatusLog frmLog;
-    private String APP_VERSION = "0.0.2";
+    private String APP_VERSION = "0.0.3";
     private CheckUserIdle CheckIdle;
 
     private void SetSystemTray() {
