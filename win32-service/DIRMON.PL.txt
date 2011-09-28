@@ -1,0 +1,423 @@
+#   DirMon.pl
+#   ---------
+#   This script monitors a directory and logs any changes made to it (file add, 
+#   delete, modification).
+#   This script is a native Win32 service therefore it needs no other
+#   utility to run as a service.
+#
+#   To install this as a service run the script with the INSTALL option:
+#       perl dirmon.pl -install
+#
+#   For help:
+#       perl dirmon.pl -?
+#
+#   2000.02.13 rothd@roth.net
+#   (c) 2000 Roth Consulting
+#   http://www.roth.net/
+
+use vars qw( $VERSION );
+use Getopt::Long;
+use Win32;
+use Win32::Daemon;
+use Win32::ChangeNotify;
+use Win32::Perms;
+
+$VERSION = 20040813;
+
+my %Config = (
+    monitor_dir         =>  join( "", Win32::GetFullPathName( '\temp' ) ),
+    monitor_sub_dirs    =>  0,
+    timeout_value       =>  2,
+    log_file            =>  join( "", Win32::GetFullPathName( $0 ) ),
+);  
+my $FileList = {};
+my $WatchDir;
+
+$Config{log_file} =~ s/[^.]*?$/log/;
+
+Getopt::Long::Configure( "prefix_pattern=(-|\/)" );
+$Result = GetOptions( \%Config,
+                      qw(
+                        install|i
+                        remove|r
+                        monitor_dir|d=s
+                        timeout_value|t=i
+                        log_file|l=s
+                        monitor_sub_dirs|s
+                        account_id|user=s
+                        account_password|pass=s
+                        help|?|h
+                      ) );
+$Config{help} = 1 if( ! $Result || scalar @ARGV );
+if( $Config{install} )
+{
+    Install();
+    exit();
+}
+elsif( $Config{remove} )
+{
+    Remove();
+    exit();
+}
+
+if( $Config{help} )
+{
+    Syntax();
+    exit();
+}
+
+# Turn off hard core domain controller lookups
+Win32::Perms::LookupDC( 0 );
+
+if( open( LOG, ">$Config{log_file}" ) )
+{
+    my $TempSelect = select( LOG );
+    $| = 1;
+    select( $TempSelect );
+    print LOG "# Software: $0\n";
+    print LOG "# Date: " . localtime() . "\n";
+    print LOG "# MonitorDir: $Config{monitor_dir}\n";
+}
+
+GetList( $Config{monitor_dir}, $FileList );
+
+$WatchDir = new Win32::ChangeNotify( $Config{monitor_dir}, $Config{monitor_sub_dirs}, FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_SIZE | FILE_NOTIFY_CHANGE_LAST_WRITE );
+if( ! $WatchDir )
+{
+    if( fileno( LOG ) )
+    {
+        print LOG "Failed to monitor watch directory '$Config{monitor_dir}'\n";
+        print LOG "Error: " . GetError() . "\n";
+        close( LOG );
+    }
+    exit();
+}
+$WatchDir->reset();
+
+# Define how long to wait before a default status update 
+# is set. This is *not* the same as our timeout value 
+# specified on the command line.
+#
+# This is not yet implemented...
+#Win32::Daemon::Timeout( 5 );
+
+# Start the service...
+if( ! Win32::Daemon::StartService() )
+{
+    if( fileno( LOG ) )
+    {
+        print LOG "Failed to start this script as a Win32 service.\n";
+        print LOG "Error: " . GetError() . "\n";
+        close( LOG );
+    }
+    exit();
+}
+
+$PrevState = SERVICE_STARTING;
+while( SERVICE_STOPPED != ( $State = Win32::Daemon::State() ) )
+{
+    if( SERVICE_START_PENDING == $State )
+    {
+        # Initialization code
+        Win32::Daemon::State( SERVICE_RUNNING );
+        $PrevState = SERVICE_RUNNING;
+    }
+	elsif( SERVICE_PAUSE_PENDING == $State )
+	{
+        # "Pausing...";
+        Win32::Daemon::State( SERVICE_PAUSED );
+        $PrevState = SERVICE_PAUSED;
+		next;
+	}
+	elsif( SERVICE_CONTINUE_PENDING == $State )
+	{
+        # "Resuming...";
+        Win32::Daemon::State( SERVICE_RUNNING );
+        $PrevState = SERVICE_RUNNING;
+		next;
+	}
+	elsif( SERVICE_STOP_PENDING == $State )
+	{
+        # "Stopping...";
+        Win32::Daemon::State( SERVICE_STOPPED );
+        $PrevState = SERVICE_STOPPED;
+		next;
+	}
+    elsif( SERVICE_RUNNING == $State )
+    {
+        # The service is running as normal...
+        my $Result = $WatchDir->wait( $Config{timeout_value} * 1000 );
+        if( $Result )
+        {
+            $FileList = ProcessDir( $FileList );
+            $WatchDir->reset();
+        }
+        $PrevState = SERVICE_RUNNING;
+    }
+    else
+    {
+        # We have some unknown state...
+        # reset it back to what we last knew the state to be...
+        Win32::Daemon::State( $PrevState );
+
+	    sleep( $Config{timeout_value} );
+    }
+}
+
+$WatchDir->close();
+Win32::Daemon::StopService();
+
+if( fileno( LOG ) )
+{
+    close( LOG );
+}
+
+# "Finished.\n";
+
+
+sub ProcessDir
+{
+    my( $OrigList ) = @_;
+    my $NewList = {};
+    my $Time = scalar localtime();
+
+    GetList( $Config{monitor_dir}, $NewList );
+
+    # First check for additions...
+    foreach my $File ( ReportNewFiles( $OrigList, $NewList ) ) 
+    {
+        print LOG "$Time: File '$File->{name}' added by '$File->{owner}.'\n";
+    }
+
+    # Now check for file size changes
+    foreach my $File ( ReportRemovedFiles( $OrigList, $NewList ) )
+    {
+       print LOG "$Time: File '$File->{name}' removed.\n";
+    }
+
+    # Now check for file size changes
+    foreach my $File ( ReportChangedFiles( $OrigList, $NewList ) )
+    {
+       print LOG "$Time: File '$File->{name}' size changed by '$File->{owner}'.\n";
+    }
+    return( $NewList );
+}
+
+
+sub GetList
+{
+    my( $Dir, $List ) = @_;
+
+    if( opendir( DIR, $Dir ) )
+    {
+        my @Files;
+        my @Dirs;
+
+        while( my $File = readdir( DIR ) )
+        {
+            next if( ( "." eq $File ) || ( ".." eq $File ) );
+            push( @Files, $File ) if( -f "$Dir/$File" );
+            push( @Dirs, $File ) if( -d "$Dir/$File" );
+        }
+        closedir( DIR );
+
+        foreach my $File ( @Files ) 
+        {
+            my %Entry;
+            my $Perm;
+            my @Stats;
+
+            $Entry{name} = $File;
+            if( $Perm = new Win32::Perms( "$Dir/$File" ) )
+            {
+                $Entry{owner} = $Perm->Owner();
+                $Perm->Close();
+            }
+            @Stats = stat( "$Dir/$File" );
+            $Entry{size} = $Stats[7];
+            $Entry{date} = $Stats[9];
+
+            $List->{lc "$Dir\\$File"} = \%Entry;
+        }                    
+
+        if( $Config{monitor_sub_dirs} )
+        {
+            foreach my $SubDir ( @Dirs )
+            {
+                GetList( "$Dir/$SubDir", $List );
+            }
+        }
+    }
+}
+
+sub ReportNewFiles
+{
+    my( $Old, $New ) = @_;
+    my $TotalOld = scalar ( keys( %$Old ) );
+    my @NewFiles;
+    
+    foreach my $NewName ( sort( keys( %$New ) ) )
+    {
+        my $iCount = $TotalOld;
+        foreach my $OldName ( keys( %$Old ) )
+        {
+            last if( lc $NewName eq lc $OldName );
+            $iCount--;
+        }
+        push( @NewFiles, $New->{$NewName} ) if( 0 == $iCount );
+    }
+    return( @NewFiles );
+}
+
+
+sub ReportRemovedFiles
+{
+    my( $Old, $New ) = @_;
+    my $TotalNew = scalar ( keys( %$New ) );
+    my @RemovedFiles;
+    
+    foreach my $OldName ( sort( keys( %$Old ) ) )
+    {
+        my $iCount = $TotalNew;
+        foreach my $NewName ( keys( %$New ) )
+        {
+            last if( lc $NewName eq lc $OldName );
+            $iCount--;
+        }
+        push( @RemovedFiles, $Old->{$OldName} ) if( 0 == $iCount );
+    }
+    return( @RemovedFiles );
+}
+
+sub ReportChangedFiles
+{
+    my( $Old, $New ) = @_;
+    my @Files;
+    
+    foreach my $Name ( sort( keys( %$Old ) ) )
+    {
+        my $LCName = lc $Name;
+        next unless( defined $New->{$LCName} );
+        
+      if( $Old->{$LCName}->{size} != $New->{$LCName}->{size} )
+      {
+          push( @Files, $New->{$Name} );
+      }
+      elsif ( $Old->{$LCName}->{date} != $New->{$LCName}->{date} )
+      {
+          push( @Files, $New->{$Name} ); # La date du fichier a changé
+      }
+    }
+    return( @Files );
+}
+
+sub GetServiceConfig
+{
+    my $ScriptPath = join( "", Win32::GetFullPathName( $0 ) );
+    my %Hash = (
+        name    =>  'DirMon',
+        display =>  'Directory Monitoring Service',
+        path    =>  $^X,
+        user    =>  $Config{account_id},
+        password=>  $Config{account_password},
+        parameters =>  "$ScriptPath -d \"$Config{monitor_dir}\" -l \"$Config{log_file}\" -t $Config{timeout_value}",
+    );
+    $Hash{parameters} .= " -s" if( $Config{monitor_sub_dirs} );
+    return( \%Hash );
+}
+
+sub Install
+{
+    my $ServiceConfig = GetServiceConfig();
+    
+    if( Win32::Daemon::CreateService( $ServiceConfig ) )
+    {
+        print "The $ServiceConfig->{display} was successfully installed.\n";
+    }
+    else
+    {
+        print "Failed to add the $ServiceConfig->{display} service.\nError: " . GetError() . "\n";
+    }
+}
+
+sub Remove
+{
+    my $ServiceConfig = GetServiceConfig();
+    
+    if( Win32::Daemon::DeleteService( $ServiceConfig->{name} ) )
+    {
+        print "The $ServiceConfig->{display} was successfully removed.\n";
+    }
+    else
+    {
+        print "Failed to remove the $ServiceConfig->{display} service.\nError: " . GetError() . "\n";
+    }
+}
+
+sub DumpError
+{
+    print GetError(), "\n";
+}
+
+sub GetError
+{
+    return( Win32::FormatMessage( Win32::Daemon::GetLastError() ) );
+}
+
+sub Syntax
+{
+    my( $Script ) = ( $0 =~ m#([^\\/]+)$# );
+    my $Line = "-" x length( $Script );
+    print << "EOT";
+
+$Script
+$Line
+A Win32 service that monitors activity on a specified directory.
+Version: $VERSION
+Syntax: 
+    $0 [-d <Dir>] [-s][-t <Time>][-l <Path>] [-remove][-install [-user <User> -pass <Pwd}]]
+
+    -d <Dir>........Specifies the directory to watch.
+    -s..............Watches for modifications in subdirectories as well.
+    -t <Time>.......Time in seconds to wait per check. This is the main loop
+                    sleep time so a long value will slow service updates.
+    -l <Path>.......Path to store the log file. Make this an empty string
+                    ("") to disable logging (making this service useless).
+                    Default: $Config{log_file}
+    -user <User>....User account the service is to run under.
+    -pass <Pwd>.....The user account's password.
+    -install........Installs this script as a Win32 service.
+                    Any additional parameters passed in will set be what the
+                    script uses when running as a service.
+    -remove.........Removes this script as a Win32 service.
+
+  Examples:
+    perl $0 -install
+    perl $0 -install -user Domain\\User -pass UserPassword -l c:\\monitor.log -d c:\\uploads
+    perl $0 -remove
+
+  Examples of command lines that can be used when starting as a service
+    perl $0 
+    perl $0 -d "c:\\temp" -l "c:\\winnt\\system32\\logfiles\\monitor.log"
+
+
+(c) 2000-2003 by Dave Roth (rothd\@roth.net)
+Courtesy of Roth Consulting
+http://www.roth.net/
+
+EOT
+
+}
+
+__END__
+
+History:
+  20000929 rothd@roth.net
+    -Created.
+
+  20030806 rothd@roth.net
+    -Fixed subdirectory monitoring bug.
+
+  20040813 rothd@roth.net                                                                 
+    -Fixed time reference. Now using "last modified time" instead of "inode change time" when comparing
+     modified files.
