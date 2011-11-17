@@ -1,5 +1,5 @@
 Kisah Pertama: Cubaan mengkompil
---------------------------------
+----
 Ketika aku cuba mengkompil slibtest, ada kesengalan berlaku dimana, aku dapat error
 
 cannot find -lhowdy 
@@ -17,9 +17,9 @@ $ ln -s libhowdy.so.1.0.1 libhowdy.so
 
 lepastu aku compile, Pergh... terus menjadi... yeayyy!!
 
------------------------------------
+----
 Kisah kedua: Cubaan run binary tu
----------------------------------
+----
 kisah seterusnya sebelum aku run, aku delete libhowdy.so.1 yang tak pernah digunakan
 kemudian aku run la...
 
@@ -48,23 +48,19 @@ $ ./slibtest
 
 Walaweiiii.... berjaya juga untuk kesekian kalinya!!
 
--------------------------------------
+----
 Kesimpulan eksperimen ini
 -------------------------
 
 Kesimpulannya:
-1. kena buat link bernama *.so sebelum compile
-2. kena buat link bernama *.so.1 sebelum run
-3. kena export LD_LIBRARY_PATH
-4. Cara paling senang nak buat dan run aplikasi kecik ialah toksah mengada nak pakai shared library
-5. Kalau apps yang nak dibuat adalah berskala besar dan banyak modul yang mungkin berubah, boleh la
-   kita nak mengada2 buat shared library. 
-6. Pengalaman yang diperoleh dari eksperimen ini berguna untuk pakai shared library orang lain. Open source punya
-   library ada banyak.
-7. Punca aku membuat eksperimen ini adalah kerana geram tengok zoiper (aplikasi SIP Phone) untuk linux yang guna
-   satu binary je, dan tak payah install pun. Maka, aku suspek dia pakai static library sebab dia ada banyak pakai
-   library-library open source juga.
-9. static link library akan menjadikan binary kita besar. tapi yang bagusnya, kita boleh jadikannya portable
+ 1. kena buat link bernama *.so sebelum compile
+ 2. kena buat link bernama *.so.1 sebelum run
+ 3. kena export LD_LIBRARY_PATH
+ 4. Cara paling senang nak buat dan run aplikasi kecik ialah toksah mengada nak pakai shared library
+ 5. Kalau apps yang nak dibuat adalah berskala besar dan banyak modul yang mungkin berubah, boleh la kita nak mengada2 buat shared library. 
+ 6. Pengalaman yang diperoleh dari eksperimen ini berguna untuk pakai shared library orang lain. Open source punya library ada banyak.
+ 7. Punca aku membuat eksperimen ini adalah kerana geram tengok zoiper (aplikasi SIP Phone) untuk linux yang guna satu binary je, dan tak payah install pun. Maka, aku suspek dia pakai static library sebab dia ada banyak pakai library-library open source juga.
+ 8. static link library akan menjadikan binary kita besar. tapi yang bagusnya, kita boleh jadikannya portable
 
 ---------------------------------------
 
