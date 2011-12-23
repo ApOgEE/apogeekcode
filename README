@@ -1,0 +1,8 @@
+Author: M. Fauzilkamil Zainuddin
+
+This is my exercise code while learning GTK+ and Cairo Custom widget tutorial 
+original code from http://zetcode.com/tutorials/gtktutorial/customwidget/
+
+to compile the code:
+$ make
+
