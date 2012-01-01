@@ -1,0 +1,59 @@
+<!--
+        build.xml
+        
+        Copyright 2012 M. Fauzilkamil Zainuddin <jerungkun@gmail.com>
+        
+        This program is free software; you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation; either version 2 of the License, or
+        (at your option) any later version.
+        
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+        
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+        MA 02110-1301, USA.
+-->
+
+<project name="openfile" basedir="." default="utama">
+
+	<property name="dir.sumber" value="src"/>
+	<property name="dir.bina" value="build"/>
+	<property name="dir.kelas" value="${dir.bina}/classes"/>
+	<property name="dir.jar" value="${dir.bina}/jar"/>
+	<property name="kelas-utama" value="org.apogeek.openfile"/>
+	<property name="csv" value="myinput.csv"/>
+	
+	<target name="clean">
+		<delete dir="${dir.bina}"/>
+		<delete file="${csv}"/>
+	</target>
+	
+	<target name="compile">
+		<mkdir dir="${dir.kelas}"/>
+		<javac srcdir="${dir.sumber}" destdir="${dir.kelas}"/>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<mkdir dir="${dir.jar}"/>
+		<jar destfile="${dir.jar}/${ant.project.name}.jar" basedir="${dir.kelas}">
+			<manifest>
+				<attribute name="Main-Class" value="${kelas-utama}"/>
+			</manifest>
+		</jar>
+		<copy file="${dir.sumber}/${csv}" todir="${dir.jar}"/>
+		<copy file="${dir.sumber}/${csv}" todir="."/>
+	</target>
+	
+	<target name="openf" depends="jar">
+		<java jar="${dir.jar}/${ant.project.name}.jar" fork="true"/>
+	</target>
+
+    <target name="clean-build" depends="clean,jar"/>
+    <target name="utama" depends="clean,openf"/>
+	
+</project>
