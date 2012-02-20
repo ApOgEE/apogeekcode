@@ -1,12 +1,14 @@
 typedef struct _CSVCol {
 	int count;
-	char **value;
+	char *value[1];
 } CSVCol;
 
 typedef struct _CSVRow {
 	int count;
-	CSVCol *rows;
+	CSVCol rows[1];
 } CSVRow;
 
 
 void printUsage(char **);
+CSVRow *ParseCSV(char *);
+

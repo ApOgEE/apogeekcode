@@ -12,6 +12,18 @@ void printUsage(char **arg) {
 	printf("Usage: %s csvfile\n", arg[0]);
 }
 
+CSVRow *ParseCSV(char *filename)
+{
+	CSVRow *csvrow;
+	//CSVCol col;
+
+	// manual add for testing
+	//col->count = 1; // 1st column
+	//col->
+
+	return csvrow;
+}
+
 int main(int argc, char **argv) {
 	char *filename;
 	CSVRow csv_rows;
