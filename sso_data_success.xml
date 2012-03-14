@@ -1,0 +1,14 @@
+<?xml version="1.0"?>  <sso mib="1">
+  <status code="200">OK</status>
+  <d k="sip.auth.userid" v="88888"/>
+  <d k="sip.auth.password" v="1234567899"/>
+  <d k="sip.auth.realm" v="voip.example.com.my"/>
+  <d k="sip.address.name" v="9004"/>
+  <d k="sip.address.displayname" v="88888"/>
+  <d k="sip.address.server.host" v="127.0.0.1"/>
+  <d k="sip.address.server.port" v="5060"/>
+  <d k="sip.outbound" v="1"/>
+  <d k="sip.outbound.proxy.host" v="127.0.0.1"/>
+  <d k="sip.outbound.proxy.port" v="5060"/>
+  <audio.codec.list><elt>ILBC/8000</elt><elt>PCMU/8000</elt><elt>PCMA/8000</elt></audio.codec.list>
+</sso> 
